@@ -10,28 +10,33 @@ class QuestionInputScreen extends StatefulWidget {
 
 class _QuestionInputScreenState extends State<QuestionInputScreen> {
   final TextEditingController _questionController = TextEditingController();
+  final TextEditingController _shuffleCountController = TextEditingController();
   String? _selectedArcana = 'major'; // Default to Major Arcana
 
   @override
   void dispose() {
     _questionController.dispose();
+    _shuffleCountController.dispose();
     super.dispose();
   }
 
   void _navigateToTarotScreen() {
-    if (_questionController.text.isNotEmpty && _selectedArcana != null) {
+    final int? shuffleCount = int.tryParse(_shuffleCountController.text);
+
+    if (_questionController.text.isNotEmpty && _selectedArcana != null && shuffleCount != null && shuffleCount > 0) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => TarotScreen(
             arcana: _selectedArcana!,
             question: _questionController.text,
+            shuffleCount: shuffleCount,
           ),
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a question and select an arcana.')),
+        const SnackBar(content: Text('Please enter a question, select an arcana, and provide a valid shuffle count.')),
       );
     }
   }
@@ -57,7 +62,17 @@ class _QuestionInputScreenState extends State<QuestionInputScreen> {
               maxLines: 3,
             ),
             const SizedBox(height: 20),
-            DropdownButtonFormField<String>(
+            TextField(
+              controller: _shuffleCountController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Number of Shuffles',
+                hintText: 'e.g., 3, 5, 10 (times to shuffle)',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+              DropdownButtonFormField<String>(
               value: _selectedArcana,
               decoration: const InputDecoration(
                 labelText: 'Select Arcana',

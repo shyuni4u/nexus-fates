@@ -6,8 +6,14 @@ import 'package:flutter/services.dart';
 class TarotScreen extends StatefulWidget {
   final String arcana;
   final String question;
+  final int shuffleCount;
 
-  const TarotScreen({super.key, required this.arcana, required this.question});
+  const TarotScreen({
+    super.key,
+    required this.arcana,
+    required this.question,
+    required this.shuffleCount,
+  });
 
   @override
   State<TarotScreen> createState() => _TarotScreenState();
@@ -20,7 +26,7 @@ class _TarotScreenState extends State<TarotScreen> {
 
   final List<dynamic> _selectedCards = [];
   final Set<String> _selectedCardNames = <String>{};
-  final int _numberOfCardsToSelect = 10;
+  final int _numberOfCardsToSelect = 10; // Will be initialized in initState
   bool _selectionComplete = false;
 
   @override
@@ -49,7 +55,9 @@ class _TarotScreenState extends State<TarotScreen> {
 
     setState(() {
       _allCards = loadedCards;
-      _allCards.shuffle(_random);
+      for (int i = 0; i < widget.shuffleCount; i++) {
+        _allCards.shuffle(_random);
+      }
       _cardsLoaded = true;
     });
   }
@@ -103,31 +111,32 @@ class _TarotScreenState extends State<TarotScreen> {
         ), // Add a white border with 2.0 width
       ),
       child: FutureBuilder(
-        future: rootBundle.load(imagePath).then((value) => value).catchError((
-          _,
-        ) {
-          if (mounted) print('Image not found: $imagePath');
-          return null;
-        }),
+        future: rootBundle.load(imagePath),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.data != null) {
+          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
             return Ink.image(image: AssetImage(imagePath), fit: BoxFit.cover);
+          } else if (snapshot.hasError) {
+            if (mounted) print('Error loading image: $imagePath - ${snapshot.error}');
+            return Container(
+              color: Colors.red[800],
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Error loading ${cardData['name']}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                  ),
+                ),
+              ),
+            );
           } else {
             return Container(
               color: Colors.blueGrey[800],
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    cardData['name'],
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
+                  child: Text(cardData['name'], textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
                 ),
               ),
             );
