@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:nexus_fates/screens/intro_screen.dart';
+import 'package:nexus_fates/screens/question_input_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       scrollBehavior: MyCustomScrollBehavior(), // Apply the custom scroll behavior
-      home: const IntroScreen(),
+      home: const QuestionInputScreen(),
     );
   }
 }

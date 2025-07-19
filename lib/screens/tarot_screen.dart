@@ -5,8 +5,9 @@ import 'package:flutter/services.dart';
 
 class TarotScreen extends StatefulWidget {
   final String arcana;
+  final String question;
 
-  const TarotScreen({super.key, required this.arcana});
+  const TarotScreen({super.key, required this.arcana, required this.question});
 
   @override
   State<TarotScreen> createState() => _TarotScreenState();
@@ -19,7 +20,7 @@ class _TarotScreenState extends State<TarotScreen> {
 
   final List<dynamic> _selectedCards = [];
   final Set<String> _selectedCardNames = <String>{};
-  final int _numberOfCardsToSelect = 3;
+  final int _numberOfCardsToSelect = 10;
   bool _selectionComplete = false;
 
   @override
