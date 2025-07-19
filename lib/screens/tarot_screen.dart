@@ -204,6 +204,14 @@ class _TarotScreenState extends State<TarotScreen> {
     final double step = cardWidth - overlap;
     final int numCards = _allCards.length;
     final double totalWidth = (numCards - 1) * step + cardWidth;
+    final double visualCount = max(_allCards.length.toDouble(), 7); // 최소 아치 기준
+    final double centerIndex = (visualCount - 1) / 2;
+
+    final Size screenSize = MediaQuery.of(context).size;
+    final double containerHeight = screenSize.height * 0.4; // 높이의 40%
+
+    final double minWidth = MediaQuery.of(context).size.width * 0.9;
+    final double contentWidth = totalWidth < minWidth ? minWidth : totalWidth;
 
     return Scaffold(
       appBar: AppBar(
@@ -231,8 +239,8 @@ class _TarotScreenState extends State<TarotScreen> {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Container(
-                        width: totalWidth,
-                        height: cardHeight * 2,
+                        width: contentWidth,
+                        height: containerHeight,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(color: Colors.blue, width: 2),
@@ -241,14 +249,17 @@ class _TarotScreenState extends State<TarotScreen> {
                         child: Stack(
                           children: List.generate(numCards, (index) {
                             final double normalizedIndex =
-                                (index - numCards / 2) / (numCards / 2);
+                                (index - centerIndex) / centerIndex;
                             final double curveY =
-                                pow(normalizedIndex, 2) * cardHeight;
-                            final double angle = normalizedIndex * 0.4;
+                                pow(normalizedIndex, 2) *
+                                (containerHeight - cardHeight);
+                            final double angle = normalizedIndex * 0.3;
+                            final double offsetX =
+                                (index - (numCards - 1) / 2) * step;
 
                             return Positioned(
-                              left: index * step,
                               top: curveY,
+                              left: contentWidth / 2 - cardWidth / 2 + offsetX,
                               child: Transform.rotate(
                                 angle: angle,
                                 child: SizedBox(
