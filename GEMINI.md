@@ -55,4 +55,10 @@ I aim for a **clean, intuitive, and visually appealing user interface**. Key asp
 - **Prompt Engineering:** Advice on how to structure effective prompts for generating Tarot interpretations that are both accurate and engaging.
 - **App Architecture:** Guidance on structuring the Flutter project to effectively manage data, state, and API interactions.
 
+## 5. Running the Flutter Application
+
+To run the Flutter application, you have a few options depending on your target platform.
+
+flutter run -d chrome
+
 ---

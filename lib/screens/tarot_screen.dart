@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:math';
@@ -15,21 +14,24 @@ class TarotScreen extends StatefulWidget {
 
 class _TarotScreenState extends State<TarotScreen> {
   List<dynamic> _allCards = [];
-  List<Map<String, dynamic>> _positionedCards = [];
   final Random _random = Random();
   bool _cardsLoaded = false;
+
+  final List<dynamic> _selectedCards = [];
+  final Set<String> _selectedCardNames = <String>{};
+  final int _numberOfCardsToSelect = 3;
+  bool _selectionComplete = false;
 
   @override
   void initState() {
     super.initState();
-    // Use a post-frame callback to ensure context is available for MediaQuery
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadCards();
-    });
+    _loadCards();
   }
 
   Future<void> _loadCards() async {
-    final String data = await rootBundle.loadString('lib/assets/data/tarot_data.json');
+    final String data = await rootBundle.loadString(
+      'lib/assets/data/tarot_data.json',
+    );
     final jsonResult = json.decode(data);
     List<dynamic> loadedCards;
 
@@ -46,57 +48,70 @@ class _TarotScreenState extends State<TarotScreen> {
 
     setState(() {
       _allCards = loadedCards;
-      _generateCardPositions();
+      _allCards.shuffle(_random);
       _cardsLoaded = true;
     });
   }
 
-  void _generateCardPositions() {
-    if (_allCards.isEmpty || !mounted) return;
-
-    final Size screenSize = MediaQuery.of(context).size;
-    const double cardWidth = 100.0;
-    const double cardHeight = 170.0; // Adjusted for text
-
-    _positionedCards = _allCards.map((cardData) {
-      return {
-        'data': cardData,
-        'top': _random.nextDouble() * (screenSize.height - cardHeight - kToolbarHeight),
-        'left': _random.nextDouble() * (screenSize.width - cardWidth),
-        'angle': (_random.nextDouble() * 0.6) - 0.3, // -0.3 to 0.3 radians
-      };
-    }).toList();
-    
-    // Shuffle the list to randomize z-index
-    _positionedCards.shuffle(_random);
-  }
-
   void _shuffleCards() {
     setState(() {
-      _generateCardPositions();
+      _allCards.shuffle(_random);
     });
   }
 
-  Widget _buildCard(Map<String, dynamic> cardData) {
-    String imageName = cardData['name'].toLowerCase().replaceAll(' ', '_') + '.png';
-    String imagePath = 'lib/assets/image/$imageName';
+  void _resetSelection() {
+    setState(() {
+      _selectedCards.clear();
+      _selectedCardNames.clear();
+      _selectionComplete = false;
+      _shuffleCards();
+    });
+  }
 
-    return Card(
+  void _handleCardTap(Map<String, dynamic> cardData) {
+    if (_selectionComplete || _selectedCardNames.contains(cardData['name'])) {
+      return;
+    }
+
+    setState(() {
+      if (_selectedCards.length < _numberOfCardsToSelect) {
+        _selectedCards.add(cardData);
+        _selectedCardNames.add(cardData['name']);
+
+        if (_selectedCards.length == _numberOfCardsToSelect) {
+          _selectionComplete = true;
+        }
+      }
+    });
+  }
+
+  Widget _buildCard(Map<String, dynamic> cardData, {bool isSelectable = true}) {
+    String imageName =
+        cardData['name'].toLowerCase().replaceAll(' ', '_') + '.png';
+    String imagePath = 'lib/assets/image/$imageName';
+    bool isSelected = _selectedCardNames.contains(cardData['name']);
+
+    Widget cardContent = Card(
       clipBehavior: Clip.antiAlias,
       elevation: 8.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: BorderSide(
+          color: Colors.white,
+          width: 2.0,
+        ), // Add a white border with 2.0 width
+      ),
       child: FutureBuilder(
-        future: rootBundle.load(imagePath).then((value) => value).catchError((_) {
-          if (mounted) { // Check if the widget is still in the tree
-            print('Image not found: $imagePath');
-          }
+        future: rootBundle.load(imagePath).then((value) => value).catchError((
+          _,
+        ) {
+          if (mounted) print('Image not found: $imagePath');
           return null;
         }),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
-            return Ink.image(
-              image: AssetImage(imagePath),
-              fit: BoxFit.cover,
-            );
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.data != null) {
+            return Ink.image(image: AssetImage(imagePath), fit: BoxFit.cover);
           } else {
             return Container(
               color: Colors.blueGrey[800],
@@ -119,43 +134,140 @@ class _TarotScreenState extends State<TarotScreen> {
         },
       ),
     );
+
+    if (!isSelectable) return cardContent;
+
+    return GestureDetector(
+      onTap: () => _handleCardTap(cardData),
+      child: Opacity(opacity: isSelected ? 0.4 : 1.0, child: cardContent),
+    );
+  }
+
+  Widget _buildSelectedCardsArea() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 24.0),
+      height: 150, // Reduced height for selected cards area
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(_numberOfCardsToSelect, (index) {
+          Widget placeholder = Container(
+            width: 100,
+            height: 160,
+            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+            decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(color: Colors.blueGrey.shade300, width: 2),
+            ),
+          );
+
+          if (index >= _selectedCards.length) return placeholder;
+
+          Widget cardBack = Container(
+            decoration: BoxDecoration(
+              color: Colors.indigo[700],
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(color: Colors.white, width: 2),
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.star_border_purple500_sharp,
+                color: Colors.amber,
+                size: 40,
+              ),
+            ),
+          );
+
+          return Container(
+            width: 100,
+            height: 160,
+            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 800),
+              transitionBuilder: (child, animation) =>
+                  FadeTransition(opacity: animation, child: child),
+              child: _selectionComplete
+                  ? _buildCard(_selectedCards[index], isSelectable: false)
+                  : cardBack,
+            ),
+          );
+        }),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    const double cardWidth = 100.0;
+    const double cardHeight = 160.0;
+    const double overlap = cardWidth * 0.6;
+    final double step = cardWidth - overlap;
+    final int numCards = _allCards.length;
+    final double totalWidth = (numCards - 1) * step + cardWidth;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.arcana.toUpperCase()} Arcana'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.shuffle),
-            onPressed: _shuffleCards,
-            tooltip: 'Shuffle Cards',
-          ),
+          if (_selectionComplete)
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: _resetSelection,
+              tooltip: 'Start Over',
+            )
+          else
+            IconButton(
+              icon: const Icon(Icons.shuffle),
+              onPressed: _shuffleCards,
+              tooltip: 'Shuffle Cards',
+            ),
         ],
       ),
       body: _cardsLoaded
-          ? Stack(
-              children: _positionedCards.map((card) {
-                return AnimatedPositioned(
-                  duration: const Duration(milliseconds: 700),
-                  curve: Curves.easeInOut,
-                  top: card['top'],
-                  left: card['left'],
-                  child: Transform.rotate(
-                    angle: card['angle'],
-                    child: SizedBox(
-                      width: 100.0,
-                      height: 170.0,
-                      child: _buildCard(card['data']),
+          ? Column(
+              children: [
+                Expanded(
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Container(
+                        width: totalWidth,
+                        height: cardHeight * 2,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.blue, width: 2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Stack(
+                          children: List.generate(numCards, (index) {
+                            final double normalizedIndex =
+                                (index - numCards / 2) / (numCards / 2);
+                            final double curveY =
+                                pow(normalizedIndex, 2) * cardHeight;
+                            final double angle = normalizedIndex * 0.4;
+
+                            return Positioned(
+                              left: index * step,
+                              top: curveY,
+                              child: Transform.rotate(
+                                angle: angle,
+                                child: SizedBox(
+                                  width: cardWidth,
+                                  height: cardHeight,
+                                  child: _buildCard(_allCards[index]),
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
                     ),
                   ),
-                );
-              }).toList(),
+                ),
+                _buildSelectedCardsArea(),
+              ],
             )
-          : const Center(
-              child: CircularProgressIndicator(),
-            ),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }
