@@ -1,6 +1,6 @@
-# nexus-fates
+# nexus_fates
 
-Nexus Fates: Unravel your destiny with AI-powered tarot readings. Discover deep insights and guidance through advanced interpretations of ancient wisdom.
+A new Flutter project.
 
 ## Getting Started
 

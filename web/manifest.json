@@ -1,11 +1,11 @@
 {
-    "name": "nexus_fates",
-    "short_name": "nexus_fates",
+    "name": "Nexus Fates",
+    "short_name": "Nexus Fates",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#2D1B69",
+    "theme_color": "#2D1B69",
+    "description": "AI-powered Tarot reading mobile app with Celtic Cross spreads.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

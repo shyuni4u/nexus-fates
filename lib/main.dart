@@ -1,33 +1,48 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'package:nexus_fates/screens/question_input_screen.dart';
+import 'screens/home_screen.dart';
+import 'services/ad_service.dart';
+import 'constants/app_constants.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize services (skip ads on web)
+  if (!kIsWeb) {
+    await AdService().initialize();
+  }
+  
+  runApp(const NexusFatesApp());
 }
 
-// A custom scroll behavior that enables mouse dragging
-class MyCustomScrollBehavior extends MaterialScrollBehavior {
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-      };
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class NexusFatesApp extends StatelessWidget {
+  const NexusFatesApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Nexus Fates Tarot',
+      title: 'Nexus Fates',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: MaterialColor(
+          AppConstants.primaryColor,
+          const <int, Color>{
+            50: Color(0xFFE8E4F3),
+            100: Color(0xFFC5BCE1),
+            200: Color(0xFF9F90CD),
+            300: Color(0xFF7864B9),
+            400: Color(0xFF5C42AA),
+            500: Color(0xFF2D1B69),
+            600: Color(0xFF3F1F9B),
+            700: Color(0xFF371B91),
+            800: Color(0xFF2F1787),
+            900: Color(0xFF200F75),
+          },
+        ),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: 'System',
       ),
-      scrollBehavior: MyCustomScrollBehavior(), // Apply the custom scroll behavior
-      home: const QuestionInputScreen(),
+      home: const HomeScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
