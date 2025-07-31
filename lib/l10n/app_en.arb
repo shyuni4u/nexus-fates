@@ -1,0 +1,235 @@
+{
+  "@@locale": "en",
+  "appTitle": "Nexus Fates",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  
+  "homeScreenTitle": "Tarot Reading",
+  "@homeScreenTitle": {
+    "description": "Title for the home screen"
+  },
+  
+  "questionInputTitle": "Ask Your Question",
+  "@questionInputTitle": {
+    "description": "Title for question input screen"
+  },
+  
+  "questionInputHint": "What would you like guidance on?",
+  "@questionInputHint": {
+    "description": "Hint text for question input field"
+  },
+  
+  "questionInputExample1": "What should I focus on in my career?",
+  "@questionInputExample1": {
+    "description": "Example question 1"
+  },
+  
+  "questionInputExample2": "How can I improve my relationships?",
+  "@questionInputExample2": {
+    "description": "Example question 2"
+  },
+  
+  "questionInputExample3": "What obstacles should I be aware of?",
+  "@questionInputExample3": {
+    "description": "Example question 3"
+  },
+  
+  "cardSelectionTitle": "Draw Your Cards",
+  "@cardSelectionTitle": {
+    "description": "Title for card selection screen"
+  },
+  
+  "shuffleCards": "Shuffle Cards",
+  "@shuffleCards": {
+    "description": "Button text to shuffle cards"
+  },
+  
+  "drawCards": "Draw Cards",
+  "@drawCards": {
+    "description": "Button text to draw cards"
+  },
+  
+  "watchAdToViewReading": "Watch Ad to View Reading",
+  "@watchAdToViewReading": {
+    "description": "Button text to watch ad for reading"
+  },
+  
+  "viewReading": "View Reading",
+  "@viewReading": {
+    "description": "Button text to view reading result"
+  },
+  
+  "readingTitle": "Your Celtic Cross Reading",
+  "@readingTitle": {
+    "description": "Title for reading result screen"
+  },
+  
+  "saveReading": "Save Reading",
+  "@saveReading": {
+    "description": "Button text to save reading"
+  },
+  
+  "newReading": "New Reading",
+  "@newReading": {
+    "description": "Button text to start new reading"
+  },
+  
+  "historyTitle": "Reading History",
+  "@historyTitle": {
+    "description": "Title for history screen"
+  },
+  
+  "noHistory": "No readings yet",
+  "@noHistory": {
+    "description": "Message when no reading history exists"
+  },
+  
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading indicator text"
+  },
+  
+  "error": "Error",
+  "@error": {
+    "description": "Generic error label"
+  },
+  
+  "retry": "Retry",
+  "@retry": {
+    "description": "Button text to retry action"
+  },
+  
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Button text to cancel action"
+  },
+  
+  "ok": "OK",
+  "@ok": {
+    "description": "Button text for OK action"
+  },
+  
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "Button text to sign in"
+  },
+  
+  "signOut": "Sign Out",
+  "@signOut": {
+    "description": "Button text to sign out"
+  },
+  
+  "email": "Email",
+  "@email": {
+    "description": "Email field label"
+  },
+  
+  "password": "Password",
+  "@password": {
+    "description": "Password field label"
+  },
+  
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings menu title"
+  },
+  
+  "language": "Language",
+  "@language": {
+    "description": "Language setting label"
+  },
+  
+  "celticCrossPosition1": "Present Situation",
+  "@celticCrossPosition1": {
+    "description": "Celtic Cross position 1"
+  },
+  
+  "celticCrossPosition2": "Challenge/Cross",
+  "@celticCrossPosition2": {
+    "description": "Celtic Cross position 2"
+  },
+  
+  "celticCrossPosition3": "Distant Past/Foundation", 
+  "@celticCrossPosition3": {
+    "description": "Celtic Cross position 3"
+  },
+  
+  "celticCrossPosition4": "Recent Past",
+  "@celticCrossPosition4": {
+    "description": "Celtic Cross position 4"
+  },
+  
+  "celticCrossPosition5": "Possible Outcome",
+  "@celticCrossPosition5": {
+    "description": "Celtic Cross position 5"
+  },
+  
+  "celticCrossPosition6": "Immediate Future",
+  "@celticCrossPosition6": {
+    "description": "Celtic Cross position 6"
+  },
+  
+  "celticCrossPosition7": "Your Approach",
+  "@celticCrossPosition7": {
+    "description": "Celtic Cross position 7"
+  },
+  
+  "celticCrossPosition8": "External Influences",
+  "@celticCrossPosition8": {
+    "description": "Celtic Cross position 8"
+  },
+  
+  "celticCrossPosition9": "Hopes and Fears",
+  "@celticCrossPosition9": {
+    "description": "Celtic Cross position 9"
+  },
+  
+  "celticCrossPosition10": "Final Outcome",
+  "@celticCrossPosition10": {
+    "description": "Celtic Cross position 10"
+  },
+  
+  "reversed": "Reversed",
+  "@reversed": {
+    "description": "Indicates a card is reversed"
+  },
+  
+  "adLoadingMessage": "Loading advertisement...",
+  "@adLoadingMessage": {
+    "description": "Message shown while ad is loading"
+  },
+  
+  "adNotReady": "Advertisement not ready, please try again later",
+  "@adNotReady": {
+    "description": "Message when ad is not ready"
+  },
+  
+  "characterCount": "{count} / {limit} characters",
+  "@characterCount": {
+    "description": "Character count for input fields",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "questionTooLong": "Question is too long. Please keep it under {limit} characters.",
+  "@questionTooLong": {
+    "description": "Error message when question exceeds character limit",
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "questionRequired": "Please enter a question before proceeding.",
+  "@questionRequired": {
+    "description": "Error message when question is empty"
+  }
+}

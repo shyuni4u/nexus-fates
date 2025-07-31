@@ -81,6 +81,11 @@ CLAUDE is a Flutter-based cross-platform mobile application that provides in-dep
 - Monitoring Supabase and Gemini API usage costs
 - Optimizing serverless function calls
 
+### Development Standards
+
+- Logging: Use lib/util/log.dart for all logging operations instead of print() statements
+- Maintain consistent code formatting and documentation standards
+
 ## Initial Development Plan
 
 ### Phase 1: Foundation Setup

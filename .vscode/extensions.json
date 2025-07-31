@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "dart-code.dart-code",
+        "dart-code.flutter",
+        "ms-vscode.vscode-json",
+        "bradlc.vscode-tailwindcss",
+        "usernamehw.errorlens",
+        "ms-vscode.vscode-typescript-next"
+    ]
+}

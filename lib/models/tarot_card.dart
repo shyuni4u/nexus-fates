@@ -1,20 +1,24 @@
 class TarotCard {
-  final int id;
+  final int? id;
   final String name;
-  final String description;
-  final String imageUrl;
+  final String? description;
+  final String? imageUrl;
   final bool isReversed;
-  final String uprightMeaning;
+  final String meaning;
   final String reversedMeaning;
+  final String? suit;
+  final String? position;
 
   const TarotCard({
-    required this.id,
+    this.id,
     required this.name,
-    required this.description,
-    required this.imageUrl,
+    this.description,
+    this.imageUrl,
     this.isReversed = false,
-    required this.uprightMeaning,
+    required this.meaning,
     required this.reversedMeaning,
+    this.suit,
+    this.position,
   });
 
   factory TarotCard.fromJson(Map<String, dynamic> json) {
@@ -24,8 +28,10 @@ class TarotCard {
       description: json['description'],
       imageUrl: json['image_url'],
       isReversed: json['is_reversed'] ?? false,
-      uprightMeaning: json['upright_meaning'],
-      reversedMeaning: json['reversed_meaning'],
+      meaning: json['meaning'] ?? json['upright_meaning'] ?? '',
+      reversedMeaning: json['reversed_meaning'] ?? '',
+      suit: json['suit'],
+      position: json['position'],
     );
   }
 
@@ -36,8 +42,10 @@ class TarotCard {
       'description': description,
       'image_url': imageUrl,
       'is_reversed': isReversed,
-      'upright_meaning': uprightMeaning,
+      'meaning': meaning,
       'reversed_meaning': reversedMeaning,
+      'suit': suit,
+      'position': position,
     };
   }
 
@@ -47,8 +55,10 @@ class TarotCard {
     String? description,
     String? imageUrl,
     bool? isReversed,
-    String? uprightMeaning,
+    String? meaning,
     String? reversedMeaning,
+    String? suit,
+    String? position,
   }) {
     return TarotCard(
       id: id ?? this.id,
@@ -56,8 +66,10 @@ class TarotCard {
       description: description ?? this.description,
       imageUrl: imageUrl ?? this.imageUrl,
       isReversed: isReversed ?? this.isReversed,
-      uprightMeaning: uprightMeaning ?? this.uprightMeaning,
+      meaning: meaning ?? this.meaning,
       reversedMeaning: reversedMeaning ?? this.reversedMeaning,
+      suit: suit ?? this.suit,
+      position: position ?? this.position,
     );
   }
 }

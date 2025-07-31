@@ -77,7 +77,7 @@ class _QuestionInputScreenState extends State<QuestionInputScreen> {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -107,7 +107,7 @@ class _QuestionInputScreenState extends State<QuestionInputScreen> {
                       'Examples: "What should I focus on in my career?" or "How can I improve my relationships?"',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                       ),
                     ),
                     Text(
@@ -116,7 +116,7 @@ class _QuestionInputScreenState extends State<QuestionInputScreen> {
                         fontSize: 12,
                         color: _characterCount > AppConstants.maxQuestionLength * 0.9
                             ? Colors.orange
-                            : Colors.white.withOpacity(0.7),
+                            : Colors.white.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
